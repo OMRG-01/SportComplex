@@ -301,49 +301,89 @@
 <main>
 
     <% if (userLoggedIn) { %>
+        <% if (userBean.getRoleId() == 2) { %>
+                <div class="welcome-container">
+                    <div id="particles-js"></div>
+                    <div class="card-grid">
+                        <!-- Book Now Card -->
+                        <div class="service-card">
+                            <i class="fas fa-calendar-check card-icon"></i>
+                            <h3 class="card-title">Instant Booking</h3>
+                            <p class="card-description">Reserve your preferred turf instantly with our easy-to-use booking system</p>
+                            <a href="<%=TRBView.BOOKING_CTL%>" class="cta-button primary-cta">
+                                Book Now
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
 
-<div class="welcome-container">
-    <div id="particles-js"></div>
-    <div class="card-grid">
-        <!-- Book Now Card -->
-        <div class="service-card">
-            <i class="fas fa-calendar-check card-icon"></i>
-            <h3 class="card-title">Instant Booking</h3>
-            <p class="card-description">Reserve your preferred turf instantly with our easy-to-use booking system</p>
-            <a href="<%=TRBView.BOOKING_CTL%>" class="cta-button primary-cta">
-                Book Now
-                <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
+                        <!-- Explore Turfs Card -->
+                        <div class="service-card">
+                            <i class="fas fa-search-location card-icon"></i>
+                            <h3 class="card-title">Explore Facilities</h3>
+                            <p class="card-description">Discover premium turfs with detailed information and photos</p>
+                            <a href="<%=TRBView.TURF_LIST_CTL%>" class="cta-button primary-cta">
+                                View Turfs
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
 
-        <!-- Explore Turfs Card -->
-        <div class="service-card">
-            <i class="fas fa-search-location card-icon"></i>
-            <h3 class="card-title">Explore Facilities</h3>
-            <p class="card-description">Discover premium turfs with detailed information and photos</p>
-            <a href="<%=TRBView.TURF_LIST_CTL%>" class="cta-button primary-cta">
-                View Turfs
-                <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-
-        <!-- Availability Card -->
-        <div class="service-card">
-            <i class="fas fa-clock card-icon"></i>
-            <h3 class="card-title">Check Availability</h3>
-            <p class="card-description">Real-time slot availability for your preferred time and date</p>
-            <a href="<%=TRBView.MANAGE_TURF_LIST_CTL%>" class="cta-button primary-cta">
-                Check Slots
-                <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-    </div>
-
-
-</div>
+                        <!-- Availability Card -->
+                        <div class="service-card">
+                            <i class="fas fa-clock card-icon"></i>
+                            <h3 class="card-title">Check Availability</h3>
+                            <p class="card-description">Real-time slot availability for your preferred time and date</p>
+                            <a href="<%=TRBView.MANAGE_TURF_LIST_CTL%>" class="cta-button primary-cta">
+                                Check Slots
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
 
 
-<% }else{  %>
+                </div>
+
+ <% }else if (userBean.getRoleId() == 1) { %>
+        <div class="welcome-container">
+                            <div id="particles-js"></div>
+                            <div class="card-grid">
+                                <!-- Book Now Card -->
+                                <div class="service-card">
+                                    <i class="fas fa-calendar-check card-icon"></i>
+                                    <h3 class="card-title">Instant Booking</h3>
+                                    <p class="card-description">Reserve your preferred turf instantly with our easy-to-use booking system</p>
+                                    <a href="<%=TRBView.BOOKING_CTL%>" class="cta-button primary-cta">
+                                        Book Now
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+
+                                <!-- Explore Turfs Card -->
+                                <div class="service-card">
+                                    <i class="fas fa-search-location card-icon"></i>
+                                    <h3 class="card-title">Explore Facilities</h3>
+                                    <p class="card-description">Discover premium turfs with detailed information and photos</p>
+                                    <a href="<%=TRBView.TURF_LIST_CTL%>" class="cta-button primary-cta">
+                                        View Turfs
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+
+                                <!-- Availability Card -->
+                                <div class="service-card">
+                                    <i class="fas fa-clock card-icon"></i>
+                                    <h3 class="card-title">Check Availability</h3>
+                                    <p class="card-description">Real-time slot availability for your preferred time and date</p>
+                                    <a href="<%=TRBView.MANAGE_TURF_LIST_CTL%>" class="cta-button primary-cta">
+                                        Check Slots
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+<% } }else{  %>
 
 
     <section class="hero-section">
@@ -415,6 +455,7 @@
 
 
     <% } %>
+
 </main>
 
 <%@ include file="Footer.jsp" %>

@@ -233,8 +233,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-tractor"></i>
-                                Turf Management
+                                <i class="fa-solid fa-volleyball"></i>
+                                Turf
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="<%=TRBView.TURF_CTL%>">
@@ -245,7 +245,21 @@
                                 </a></li>
                             </ul>
                         </li>
-
+                <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-tractor"></i>
+                                                Turf Slot
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="<%=TRBView.MANAGE_TURF_CTL%>">
+                                                    <i class="fas fa-plus-circle"></i> Add Slot
+                                                </a></li>
+                                                <li><a class="dropdown-item" href="<%=TRBView.MANAGE_TURF_LIST_CTL%>">
+                                                    <i class="fas fa-list"></i> Turf Slot List
+                                                </a></li>
+                                            </ul>
+                                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<%=TRBView.BOOKING_LIST_CTL%>">
                                 <i class="fas fa-calendar-check"></i>
