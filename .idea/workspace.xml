@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5d17eb6-6a43-45f1-8ebd-ea2bb6be264b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +38,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Smart Tomcat Pro.Unnamed.executor": "Run",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "UI6",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/omgaw/Downloads/apache-tomcat-9.0.98-windows-x86/apache-tomcat-9.0.98",
     "project.structure.last.edited": "SDKs",

@@ -1,5 +1,5 @@
 # Default ignored files
-shelf
-
+.settings
+/.idea/workspace.xml
 bin
-settings
+target
