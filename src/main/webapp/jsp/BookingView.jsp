@@ -53,8 +53,9 @@
 						value="<%=DataUtility.getTimestamp(bean.getModifiedDatetime())%>">
 
 					<%
-						List list = (List) request.getAttribute("turfList");
-					%>
+                        List list = (List) request.getAttribute("turfList");
+                        List list1 = (List) request.getAttribute("slotList"); // Add this line
+                    %>
 
 					<div class="form-group">
 						<div class="col-md-6 mb-3 md-form" style="padding-left: 0px">
