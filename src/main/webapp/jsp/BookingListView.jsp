@@ -9,154 +9,267 @@
 <%@page import="in.co.turf.booking.util.ServletUtility"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Booking List</title>
-<style type="text/css">
-table.dataTable thead .sorting:after, table.dataTable thead .sorting:before,
-	table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_asc:before,
-	table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_asc_disabled:before,
-	table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_desc:before,
-	table.dataTable thead .sorting_desc_disabled:after, table.dataTable thead .sorting_desc_disabled:before
-	{
-	bottom: .5em;
+<title>Booking List | TurfZone</title>
+<style>
+:root {
+    --primary-color: #2ecc71;
+    --secondary-color: #27ae60;
+    --accent-color: #f39c12;
+    --light-color: #ffffff;
+    --dark-color: #2c3e50;
+    --bg-gradient: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.booking-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.booking-header {
+    background: var(--bg-gradient);
+    color: var(--light-color);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.filter-card {
+    background: var(--light-color);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.search-input {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.search-input i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+}
+
+.search-input input {
+    padding-left: 2.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.search-input input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.25);
+}
+
+.data-table {
+    background: var(--light-color);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+}
+
+.data-table thead {
+    background: var(--bg-gradient);
+    color: var(--light-color);
+}
+
+.data-table th {
+    border-bottom: 2px solid var(--primary-color) !important;
+    padding: 1rem 1.5rem;
+}
+
+.data-table td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-pagination {
+    background: var(--primary-color);
+    color: var(--light-color);
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-pagination:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+}
+
+/* Dark mode adjustments */
+body.dark-mode .filter-card,
+body.dark-mode .data-table {
+    background: var(--dark-color);
+}
+
+body.dark-mode .search-input input {
+    background: #34495e;
+    border-color: #2c3e50;
+    color: var(--light-color);
 }
 </style>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#dtBasicExample').DataTable();
-		$('.dataTables_length').addClass('bs-select');
-	});
-	$(window).on('load', function() {
-		$('#mdb-preloader').delay(1000).fadeOut(300);
-	});
-</script>
 </head>
 <body>
+    <%@ include file="Header.jsp"%>
 
-	<%@ include file="Header.jsp"%>
-	<br>
-	<nav aria-label="breadcrumb">
-		<ol class="breadcrumb pink lighten-4">
-			<li class="breadcrumb-item"><a class="black-text"
-				href="<%=TRBView.WELCOME_CTL%>">Home</a></li>
-			<li class="breadcrumb-item active">Booking List</li>
-		</ol>
-	</nav>
-	
+    <div class="booking-container">
+        <div class="booking-header">
+            <h2 class="mb-3">Booking Management</h2>
+            <p class="lead">View and manage all turf reservations</p>
+        </div>
 
-	<div style="margin-top: 18px; margin-left: 50px">
-		<h2>
-			<b>Booking List</b>
-		</h2>
-		<b><font color="red"><%=ServletUtility.getErrorMessage(request)%></font></b>
-		<b><font color="green"><%=ServletUtility.getSuccessMessage(request)%></font></b>
-	</div>
-	<hr>
-	<form action="<%=TRBView.BOOKING_LIST_CTL%>" method="post"
-		class="form-inline d-flex justify-content-center md-form form-sm active-purple active-purple-2 mt-2">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-4">
-					<i class="fas fa-search" aria-hidden="true"></i> <input
-						class="form-control form-control-sm ml-3 w-75" type="text"
-						placeholder="Search By  Turf Name" name="name"
-						aria-label="Search"
-						value="<%=ServletUtility.getParameter("name", request)%>">
-				</div>
-				<div class="col-sm-4">
-					<i class="fas fa-search" aria-hidden="true"></i> <input
-						class="form-control form-control-sm ml-3 w-75" type="text"
-						placeholder="Search By User Name" name="userName" aria-label="Search"
-						value="<%=ServletUtility.getParameter("userName", request)%>">
-				</div>
-				<div class="col-sm-4">
-					<input class="btn btn-outline-primary btn-md m-0 waves-effect"
-						type="submit" name="operation" aria-label="Search"
-						value="<%=BookingListCtl.OP_SEARCH%>"> Or <input
-						class="btn btn-outline-primary btn-md m-0 waves-effect"
-						type="submit" name="operation" aria-label="Search"
-						value="<%=BookingListCtl.OP_RESET%>">
-				</div>
-			</div>
-		</div>
+        <!-- Alerts -->
+        <% if (!ServletUtility.getErrorMessage(request).isEmpty()) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%=ServletUtility.getErrorMessage(request)%>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
 
+        <% if (!ServletUtility.getSuccessMessage(request).isEmpty()) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%=ServletUtility.getSuccessMessage(request)%>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
 
+        <!-- Filter Card -->
+        <div class="filter-card">
+            <form action="<%=TRBView.BOOKING_LIST_CTL%>" method="post">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="search-input">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="form-control"
+                                   placeholder="Search by Turf Name" name="name"
+                                   value="<%=ServletUtility.getParameter("name", request)%>">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="search-input">
+                            <i class="fas fa-user"></i>
+                            <input type="text" class="form-control"
+                                   placeholder="Search by User Name" name="userName"
+                                   value="<%=ServletUtility.getParameter("userName", request)%>">
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center gap-3">
+                        <button type="submit" name="operation"
+                                class="btn btn-primary flex-grow-1"
+                                value="<%=BookingListCtl.OP_SEARCH%>">
+                            <i class="fas fa-filter me-2"></i>Apply Filters
+                        </button>
+                        <button type="submit" name="operation"
+                                class="btn btn-outline-secondary"
+                                value="<%=BookingListCtl.OP_RESET%>">
+                            <i class="fas fa-redo me-2"></i>Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
+        <!-- Data Table -->
+        <div class="data-table">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Turf Name</th>
+                        <th>User</th>
+                        <th>Time Slot</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                    int pageNo = ServletUtility.getPageNo(request);
+                    int pageSize = ServletUtility.getPageSize(request);
+                    int index = ((pageNo - 1) * pageSize) + 1;
+                    int size = ServletUtility.getSize(request);
+                    BookingBean bean = null;
+                    List list = ServletUtility.getList(request);
+                    Iterator<BookingBean> iterator = list.iterator();
+                    while (iterator.hasNext()) {
+                        bean = iterator.next();
+                    %>
+                    <tr>
+                        <td><%=index++%></td>
+                        <td><%=bean.getTurfName()%></td>
+                        <td><%=bean.getUserName()%></td>
+                        <td><span class="badge bg-primary"><%=bean.getTime()%></span></td>
+                        <td><%=bean.getTurfLocation()%></td>
+                        <td><i class="fas fa-calendar-day me-2"></i><%=DataUtility.getDateString(bean.getDate())%></td>
+                        <td>₹<%=bean.getAmount()%></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
 
-		<!--Table-->
-		<table id="tablePreview"
-			class="table table-hover table-striped table-bordered">
-			<!--Table head-->
-			<thead>
-				<tr>
-					
-					<th>#</th>
-					<th>Turf Name</th>
-					<th>User Name</th>
-					<th>Slot</th>
-					<th>Location</th>
-					<th>Date</th>
-					<th>Amount</th>
-					
-				</tr>
-			</thead>
-			<!--Table head-->
-			<!--Table body-->
-			<tbody>
-				<%
-					int pageNo = ServletUtility.getPageNo(request);
-				int pageSize = ServletUtility.getPageSize(request);
-				int index = ((pageNo - 1) * pageSize) + 1;
-				int size = ServletUtility.getSize(request);
-				BookingBean bean = null;
-				List list = ServletUtility.getList(request);
-				Iterator<BookingBean> iterator = list.iterator();
-				while (iterator.hasNext()) {
-					bean = iterator.next();
-				%>
-				<tr>
-					
-					<th scope="row"><%=index++%></th>
-					<td><%=bean.getTurfName()%></td>
-					<td><%=bean.getUserName()%></td>
-					<td><%=bean.getTime()%></td>
-					<td><%=bean.getTurfLocation()%></td>
-					<td><%=DataUtility.getDateString(bean.getDate())%></td>
-					<td><%=bean.getAmount()%></td>
-				</tr>
-				<%
-					}
-				%>
-			</tbody>
-			<!--Table body-->
-		</table>
-		<br>
+        <!-- Pagination -->
+        <div class="pagination-controls">
+            <form action="<%=TRBView.BOOKING_LIST_CTL%>" method="post">
+                <input type="hidden" name="pageNo" value="<%=pageNo%>">
+                <input type="hidden" name="pageSize" value="<%=pageSize%>">
 
-		<table class="table  table-responsive-md btn-table">
-			<tbody>
-				<tr>
-					<td><input type="submit" name="operation"
-						class="btn btn-outline-primary btn-sm m-0 waves-effect"
-						value="<%=ManageTurfListCtl.OP_PREVIOUS%>"
-						<%=(pageNo == 1) ? "disabled" : ""%>></td>
-				
-					<td><input type="submit" name="operation"
-						class="btn btn-outline-primary btn-sm m-0 waves-effect"
-						value="<%=ManageTurfListCtl.OP_NEXT%>"
-						<%=((list.size() < pageSize) || size == pageNo * pageSize) ? "disabled" : ""%>></td>
-				</tr>
-			</tbody>
-		</table>
-		<input type="hidden" name="pageNo" value="<%=pageNo%>"> <input
-			type="hidden" name="pageSize" value="<%=pageSize%>">
-	</form>
-	<!--Table-->
+                <button type="submit" name="operation"
+                        class="btn btn-pagination <%= (pageNo == 1) ? "disabled" : "" %>"
+                        value="<%=ManageTurfListCtl.OP_PREVIOUS%>">
+                    <i class="fas fa-chevron-left me-2"></i>Previous
+                </button>
 
-	<%@ include file="Footer.jsp"%>
+                <button type="submit" name="operation"
+                        class="btn btn-pagination <%= ((list.size() < pageSize) || size == pageNo * pageSize) ? "disabled" : "" %>"
+                        value="<%=ManageTurfListCtl.OP_NEXT%>">
+                    Next<i class="fas fa-chevron-right ms-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <%@ include file="Footer.jsp"%>
+
+    <script>
+    // Initialize DataTable with modern settings
+    $(document).ready(function() {
+        $('.data-table').DataTable({
+            paging: false,
+            info: false,
+            responsive: true,
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search records..."
+            },
+            columnDefs: [{
+                orderable: false,
+                targets: "no-sort"
+            }]
+        });
+    });
+    </script>
 </body>
 </html>

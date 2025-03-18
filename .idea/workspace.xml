@@ -7,6 +7,10 @@
     <list default="true" id="f5d17eb6-6a43-45f1-8ebd-ea2bb6be264b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/in/co/turf/booking/ctl/BookingCtl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/in/co/turf/booking/ctl/BookingCtl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/BookingListView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/jsp/BookingListView.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/BookingView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/jsp/BookingView.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/TurfView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/jsp/TurfView.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
