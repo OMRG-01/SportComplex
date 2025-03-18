@@ -48,10 +48,11 @@ public class BookingCtl extends BaseCtl {
 
 		boolean pass = true;
 
-		if ("-----Select-----".equalsIgnoreCase(request.getParameter("turfId"))) {
+		// Only validate turf selection if not coming from Book Now link
+		if (request.getParameter("turfId") == null
+				&& "-----Select-----".equalsIgnoreCase(request.getParameter("turfId"))) {
 			request.setAttribute("turfId", PropertyReader.getValue("error.require", "Turf Name"));
 			pass = false;
-
 		}
 
 		if ("-----Select-----".equalsIgnoreCase(request.getParameter("time"))) {
@@ -136,31 +137,40 @@ public class BookingCtl extends BaseCtl {
 			throws ServletException, IOException {
 		log.debug("BookingCtl Method doGet Started");
 
-		String op = DataUtility.getString(request.getParameter("operation"));
-		// get model
-
-		BookingModel model = new BookingModel();
-
-		long id = DataUtility.getLong(request.getParameter("id"));
-
-		if (id > 0 || op != null) {
-
-			BookingBean bean;
+		// Handle preselected turf from Book Now link
+		String turfIdParam = request.getParameter("turfId");
+		if (turfIdParam != null && !turfIdParam.isEmpty()) {
 			try {
-				bean = model.findByPK(id);
+				long turfId = DataUtility.getLong(turfIdParam);
+				TurfModel turfModel = new TurfModel();
+				TurfBean selectedTurf = turfModel.findByPK(turfId);
 
-				ServletUtility.setBean(bean, request);
-				ServletUtility.forward(getView(), request, response);
+				if (selectedTurf != null) {
+					request.setAttribute("selectedTurf", selectedTurf);
+					BookingBean bookingBean = new BookingBean();
+					bookingBean.setTurfId(turfId);
+					ServletUtility.setBean(bookingBean, request);
+				}
 			} catch (ApplicationException e) {
-				log.error(e);
-
 				ServletUtility.handleException(e, request, response);
 				return;
 			}
-			
 		}
 
-		
+		String op = DataUtility.getString(request.getParameter("operation"));
+		BookingModel model = new BookingModel();
+		long id = DataUtility.getLong(request.getParameter("id"));
+
+		if (id > 0 || op != null) {
+			try {
+				BookingBean bean = model.findByPK(id);
+				ServletUtility.setBean(bean, request);
+			} catch (ApplicationException e) {
+				ServletUtility.handleException(e, request, response);
+				return;
+			}
+		}
+
 		ServletUtility.forward(getView(), request, response);
 		log.debug("BookingCtl Method doGet Ended");
 	}

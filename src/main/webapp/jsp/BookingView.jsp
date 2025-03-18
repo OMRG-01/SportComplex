@@ -8,6 +8,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Book Turf</title>
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
 :root {
     --primary-color: #2ecc71;
@@ -102,6 +104,7 @@ body.dark-mode {
 body.dark-mode .booking-card {
     background: var(--dark-color);
     color: var(--light-color);
+    border-radius: 15px;
 }
 
 body.dark-mode .custom-select {
@@ -181,6 +184,9 @@ body.dark-mode .date-input i {
 .flatpickr-current-month .numInputWrapper span.arrowDown:after {
     border-top-color: var(--primary-color);
 }
+.flatpickr-calendar {
+    z-index: 1000 !important;
+}
 
 /* Dark mode styles */
 body.dark-mode .flatpickr-calendar {
@@ -256,6 +262,7 @@ body.dark-mode .custom-select-wrapper select {
 body.dark-mode .custom-select-wrapper::after {
     color: var(--light-color);
 }
+
 </style>
 </head>
 <body>
@@ -335,7 +342,6 @@ body.dark-mode .custom-select-wrapper::after {
                            name="date"
                            placeholder="Select Date"
                            data-date-format="d/m/Y"
-                           data-min-date="today"
                            value="<%=DataUtility.getDateString(bean.getDate())%>"
                            required>
                     <div class="error-message">
@@ -361,48 +367,64 @@ body.dark-mode .custom-select-wrapper::after {
 
 <%@ include file="Footer.jsp"%>
 
+<!-- Required Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
-// Form validation
-(function () {
-  'use strict'
-  var forms = document.querySelectorAll('.needs-validation')
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
+// Initialize after DOM loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Debug: Check if Flatpickr exists
+    if(typeof flatpickr === 'undefined') {
+        console.error('Flatpickr not loaded! Check CDN connection');
+        return;
+    }
+
+    // Initialize date picker with error handling
+    try {
+        const pickerInstance = flatpickr('.flatpickr-input', {
+            dateFormat: "d/m/Y",
+            minDate: "today",
+            disableMobile: false, // Enable mobile-friendly version
+            static: true,
+            onReady: function(selectedDates, dateStr, instance) {
+                console.log('Flatpickr initialized successfully');
+            },
+            onChange: function(selectedDates, dateStr, instance) {
+                console.log('Date selected:', dateStr);
+                instance.close();
+            }
+        });
+
+        // Debug: Check instance
+        if(!pickerInstance) {
+            console.error('Failed to initialize Flatpickr');
+            return;
         }
-        form.classList.add('was-validated')
-      }, false)
-    })
-})();
 
-// Date input customization
-const dateInput = document.querySelector('input[type="date"]');
-const today = new Date().toISOString().split('T')[0];
-dateInput.setAttribute('min', today);
-dateInput.setAttribute('placeholder', 'Select booking date');
-
-flatpickr('.flatpickr-input', {
-    dateFormat: "d/m/Y",
-    minDate: "today",
-    disableMobile: true, // Better desktop experience
-    monthSelectorType: 'dropdown',
-    static: true,
-    onChange: function(selectedDates, dateStr, instance) {
-        instance.close(); // Close after selection
+        // Convert initial date value
+        const inputElement = document.querySelector('.flatpickr-input');
+        if(inputElement && inputElement.value) {
+            console.log('Initial date value:', inputElement.value);
+            try {
+                const parsedDate = new Date(inputElement.value);
+                if(!isNaN(parsedDate)) {
+                    const formattedDate = flatpickr.formatDate(parsedDate, "d/m/Y");
+                    console.log('Formatted date:', formattedDate);
+                    inputElement.value = formattedDate;
+                }
+            } catch(e) {
+                console.error('Date formatting error:', e);
+            }
+        }
+    } catch(e) {
+        console.error('Flatpickr initialization error:', e);
     }
 });
 
-// Convert existing date value to dd/mm/yyyy format
-document.querySelectorAll('.flatpickr-input').forEach(input => {
-    if(input.value) {
-        const date = new Date(input.value);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        input.value = `${day}/${month}/${date.getFullYear()}`;
-    }
+// Global error handling
+window.addEventListener('error', function(e) {
+    console.error('Script Error:', e.message, 'in', e.filename, 'line', e.lineno);
 });
 </script>
 </body>

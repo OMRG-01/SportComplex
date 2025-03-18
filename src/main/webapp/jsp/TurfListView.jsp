@@ -203,9 +203,9 @@ body.dark-mode .search-section {
                             </ul>
                         </div>
                         <% } else { %>
-                        <a href="<%=TRBView.BOOKING_CTL%>" class="btn btn-primary">
-                            Book Now <i class="fas fa-arrow-right"></i>
-                        </a>
+                       <a href="<%=TRBView.BOOKING_CTL%>?turfId=<%=bean.getId()%>" class="btn btn-primary">
+                           Book Now <i class="fas fa-arrow-right"></i>
+                       </a>
                         <% } %>
                     </div>
                 </div>
